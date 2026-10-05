@@ -42,16 +42,36 @@ while (true)
         list.Add(new Item(name, price));
         
     }
+
+    // Bytt ut int.Parse mot int.TryParse vid borttagning av vara.
+    // Så om man nu råkar skriva bokstäver istället för ett nummer kraschar inte programmet,
+    // utan användaren får ett meddelande och ett nytt försök att skriva en siffra.
     else if (choice == 2)
     {
-        Console.Write("Nummer: ");
+    int number;
+    Console.Write("Ange nummer att ta bort: ");
+
+    // Säkra inmatningen mot bokstäver iställer för siffror
+    while (!int.TryParse(Console.ReadLine(), out number))
+    {
+        Console.Write("Ogiltigt val! Skriv ett heltal: ");
+    }
+
+    // Skicka numret direkt till ShoppingList som sköter -1
+    list.RemoveAt(number);
+}
+    else if (choice == 3)
+    {
+        list.Save();
+    }
+       /* Console.Write("Nummer: ");
         int number = int.Parse(Console.ReadLine());
         list.RemoveAt(number);
     }
     else if (choice == 3)
     {
         list.Save();
-    }
+    }*/
     else if (choice == 4)
     {
         Console.Write("Namn att söka efter: ");

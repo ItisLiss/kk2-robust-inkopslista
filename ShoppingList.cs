@@ -15,9 +15,22 @@ class ShoppingList
     }
 
     // Removes the item the user sees as number 1, 2, 3 ...
+    // Lagt till en if-sats som kollar att numret ligger inom listans gränser.
+    // Förhindrar ArgumentOutOfRangeException om användaren anger ett nummer som inte finns i listan.
     public void RemoveAt(int number)
     {
-        items.RemoveAt(number - 1);
+        if (number >= 1 && number <= items.Count)
+        // Förtydligar även om varan är borttagen eller om det är ett ogiltligt numer,
+        // Förhindrar krasch vid felinmatning.
+        {
+            items.RemoveAt(number - 1); // Får inte glömma -1, annars blir det tok
+            Console.WriteLine("Varan har tagits bort.");
+        }
+        else
+        {
+            Console.WriteLine("Ogiltligt numer, ingen vara togs bort");
+        }
+
     }
 
     // Adds up the price of every item on the list.
