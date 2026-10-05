@@ -48,30 +48,25 @@ while (true)
     // utan användaren får ett meddelande och ett nytt försök att skriva en siffra.
     else if (choice == 2)
     {
-    int number;
-    Console.Write("Ange nummer att ta bort: ");
+        if (list.Count == 0)
+        {
+            Console.WriteLine("Listan är tom! Det finns inga varor att ta bort.");
+        }
+        else
+        {
+            int number;
+            Console.Write($"Ange nummer att ta bort (1-{list.Count}): ");
 
-    // Säkra inmatningen mot bokstäver iställer för siffror
-    while (!int.TryParse(Console.ReadLine(), out number))
-    {
-        Console.Write("Ogiltigt val! Skriv ett heltal: ");
+            // Loopar tills användaren matar in ett giltigt heltal som faktiskt finns i listan
+            while (!int.TryParse(Console.ReadLine(), out number) || number < 1 || number > list.Count)
+            {
+                Console.Write($"Ogiltigt nummer! Ange ett nummer mellan 1 och {list.Count}: ");
+            }
+            // Skicka numret direkt till ShoppingList som sköter -1
+            list.RemoveAt(number);
+        }
     }
 
-    // Skicka numret direkt till ShoppingList som sköter -1
-    list.RemoveAt(number);
-}
-    else if (choice == 3)
-    {
-        list.Save();
-    }
-       /* Console.Write("Nummer: ");
-        int number = int.Parse(Console.ReadLine());
-        list.RemoveAt(number);
-    }
-    else if (choice == 3)
-    {
-        list.Save();
-    }*/
     else if (choice == 4)
     {
         Console.Write("Namn att söka efter: ");

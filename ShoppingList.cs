@@ -13,24 +13,36 @@ class ShoppingList
     {
         items.Add(item);
     }
-
+    // Ändring 1:
     // Removes the item the user sees as number 1, 2, 3 ...
     // Lagt till en if-sats som kollar att numret ligger inom listans gränser.
     // Förhindrar ArgumentOutOfRangeException om användaren anger ett nummer som inte finns i listan.
+  
+    // Ändring 2:
+    // Koden sparar ner varan till en variabel innan borttagning.
+    // Det som ändrat är att vi kan ge tydligare feedback till användaren genom att skriva ut 
+    // exakt vilken vara (namn och pris) som togs bort ur listan.
     public void RemoveAt(int number)
     {
+        // Kontrollerar att numret är giltigt
         if (number >= 1 && number <= items.Count)
-        // Förtydligar även om varan är borttagen eller om det är ett ogiltligt numer,
-        // Förhindrar krasch vid felinmatning.
         {
+            Item itemToRemove = items[number - 1];
             items.RemoveAt(number - 1); // Får inte glömma -1, annars blir det tok
-            Console.WriteLine("Varan har tagits bort.");
+
+            //Skriver ut exakt vilken vara som togs bort, fint som smör.
+            Console.WriteLine($"{itemToRemove} har tagits bort ur listan.");
         }
         else
         {
-            Console.WriteLine("Ogiltligt numer, ingen vara togs bort");
+            Console.WriteLine("Ogiltigt nummer! Ingen vara togs bort.");
         }
+    }
 
+    // Ger antalet varor i listan (så Program.cs kan kontrollera giltiga nummer)
+    public int Count
+    {
+        get { return items.Count; }
     }
 
     // Adds up the price of every item on the list.
