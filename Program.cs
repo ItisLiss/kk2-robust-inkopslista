@@ -11,9 +11,17 @@ while (true)
     Console.WriteLine("3. Spara");
     Console.WriteLine("4. Sök vara");
     Console.WriteLine("5. Avsluta");
+    // Bytte ut int.Parse mot int.TryParse i while loopen för menyinvalen.
+    // Så när man matar in bokstäver eller tom text kraschar inte programmet med FormatException,
+    // utan ber istället användaren att skriva en giltig siffra tills inmatningen lyckas.
+    int choice;
     Console.Write("Välj: ");
 
-    int choice = int.Parse(Console.ReadLine());
+    while (!int.TryParse(Console.ReadLine(), out choice))
+    {
+        Console.Write("Ogiltigt val! Skriv en siffra: ");
+    }
+
 
     if (choice == 1)
     {
@@ -52,4 +60,6 @@ while (true)
     {
         break;
     }
+    
 }
+
