@@ -79,14 +79,26 @@ class ShoppingList
     }
 
     // Reads the file back into the list.
-    public void Load()
+        public void Load()
     {
-        string text = File.ReadAllText(path);
-        string[] lines = text.Split('\n');
+        // ÄNDRING: Bytt från File.ReadAllText() till File.ReadAllLines().
+        // Anledning: ReadAllLines hanterar både Windows (\r\n) och Linux (\n) radbrytningar automatiskt
+        // och ger oss en färdig array med alla rader i filen.
+        string[] lines = File.ReadAllLines(path);
 
         foreach (string line in lines)
         {
             string[] parts = line.Split(';');
+
+            /// ÄNDRING: Lagt till en kontroll av arrayens längd innan vi hämtar värden från parts[0] och parts[1].
+            // Anledning: Om det finns tomma rader i slutet av filen kraschar programmet med IndexOutOfRangeException 
+            // eftersom det inte finns något index 1. Med if (parts.Length < 2) och continue hoppar vi säkert över tomma rader.
+            if (parts.Length < 2)
+            {
+                continue;
+            }
+
+            // parts[0] = pris, parts[1] = namn
             items.Add(new Item(parts[1], int.Parse(parts[0])));
         }
     }
