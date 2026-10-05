@@ -81,8 +81,15 @@ class ShoppingList
     // Reads the file back into the list.
         public void Load()
     {
-        // ÄNDRING: Bytt från File.ReadAllText() till File.ReadAllLines().
-        // Anledning: ReadAllLines hanterar både Windows (\r\n) och Linux (\n) radbrytningar automatiskt
+        // För att förhindra att koden kraschar om items.txt inte finns, las en kontroll in
+        // Genom return avslutar/avbryter vi Load() och startar om med en tom lista
+        if (!File.Exists(path))
+        {
+            return;
+        }
+
+        // Bytt från File.ReadAllText() till File.ReadAllLines().
+        // ReadAllLines hanterar både Windows (\r\n)  radbrytningar automatiskt
         // och ger oss en färdig array med alla rader i filen.
         string[] lines = File.ReadAllLines(path);
 
