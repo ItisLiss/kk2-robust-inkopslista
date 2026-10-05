@@ -27,9 +27,20 @@ while (true)
     {
         Console.Write("Namn: ");
         string name = Console.ReadLine();
+        // Bytte även ut int.Parse mot int.TryParse vid prisinmatning.
+        // Vilket förhindrar FormatException om användaren anger bokstäver eller annat felaktigt format som 14.5 för priset.
+        int price;
         Console.Write("Pris: ");
-        int price = int.Parse(Console.ReadLine());
+
+        // Snurrar tills användaren anger ett giltigt heltal
+        while (!int.TryParse(Console.ReadLine(), out price))
+        {
+            Console.Write("Ogiltigt pris! Skriv ett heltal: ");
+        }
+       /* Console.Write("Pris: ");
+        int price = int.Parse(Console.ReadLine()); */
         list.Add(new Item(name, price));
+        
     }
     else if (choice == 2)
     {

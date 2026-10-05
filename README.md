@@ -18,3 +18,10 @@ Om vi skrev bokstäver, t.ex: abc i menyvalet kraschade programmet direkt.
 Varför: Koden använde int.Parse(Console.ReadLine()) som kastar ett FormatException om texten inte är ett giltigt heltal.
 
 Hur jag löste det: Jag ersatte int.Parse med int.TryParse inuti en while-loop. Om inläsningen misslyckas får användaren ett felmeddelande och en ny chans att skriva en siffra utan att programmet avbryts.
+
+# Fel 4: Krasch vid felinmatning vid prissättning (FormatException)
+När man lade till en vara och skrev bokstäver eller ogiltligt värde som pris så kraschade programmet.
+
+Varför: int.Parse misslyckades med att omvandla textsträngen till ett heltal.
+
+Hur jag löste det: Ersatte int.Parse med int.TryParse i en till while-loop som Fel: 3, som kräver att ett giltigt heltal matas in innan varan skapas och läggs till i listan.
