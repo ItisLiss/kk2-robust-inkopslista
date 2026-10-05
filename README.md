@@ -39,3 +39,10 @@ När användaren skrev ett nummer som inte motsvarade en vara i listan (t.ex. 68
 Metoden items.RemoveAt() anropades direkt utan att kontrollera om det valda itemet faktiskt existerade i listan.
 
 Hur jag löste det: Jag lade till en villkorsstyrd kontroll if (number >= 1 && number <= items.Count) i ShoppingList.cs. Om numret är giltigt tas varan bort med number - 1 (*minns inte vad det heter när man behöver ange -1*). Om numret ligger utanför intervallet visas ett tydligt felmeddelande och programmet körs vidare tryggt.
+
+# Fel 7: Felaktig totalsumma
+Totalsumman för alla varor i listan stämde inte utan var lägre än den faktiska summan pga att första summan inte räknades med.
+
+Varför: ShoppingList.cs startade på index i = 1 istället för i = 0. Det gjorde att priset för den allra första varan i listan aldrig lades till i summan.
+
+Hur jag löste det: Jag ändrade startvärdet i for-loopen från int i = 1 till int i = 0 så att beräkningen omfattar samtliga varor i listan.

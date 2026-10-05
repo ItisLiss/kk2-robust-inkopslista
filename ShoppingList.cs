@@ -49,8 +49,10 @@ class ShoppingList
     public int Total()
     {
         int sum = 0;
-
-        for (int i = 1; i < items.Count; i++)
+        //Ändrat startindex i for loopen från i = 1 till i = 0.
+        // i = 1 hoppades den första varan över 
+        // och räknades aldrig med i totalsumman (Höll på att missa).
+        for (int i = 0; i < items.Count; i++) //Startar nu på index 0
         {
             sum += items[i].Price;
         }
@@ -129,7 +131,6 @@ class ShoppingList
             {
                 continue;
             }
-
             // parts[0] = pris, parts[1] = namn
             items.Add(new Item(parts[1], int.Parse(parts[0])));
         }
