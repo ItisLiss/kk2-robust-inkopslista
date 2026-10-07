@@ -46,3 +46,10 @@ Totalsumman för alla varor i listan stämde inte utan var lägre än den faktis
 Varför: ShoppingList.cs startade på index i = 1 istället för i = 0. Det gjorde att priset för den allra första varan i listan aldrig lades till i summan.
 
 Hur jag löste det: Jag ändrade startvärdet i for-loopen från int i = 1 till int i = 0 så att beräkningen omfattar samtliga varor i listan.
+
+# Fel 8: Sökfunktionen hittade inte varor när man använde stora och små bostäver på olika platser.
+Om man sökte på en vara med små bokstäver (t.ex. "mjölk") när varan var sparad med stor bokstav ("Mjölk"), rapporterade programmet att varan inte fanns i listan.
+
+Varför: Koden jämförde strängar direkt med item.Name == name. Detta krävde exakt matchning av alla tecken och radbrytningstecken (\r) hamnade i namnet när listan lästes in från fil.
+
+Hur jag löste det: I Load() lade jag till .Trim() på varans namn när det läses in för att rensa bort dolda tecken. I Find() i ShoppingList.cs uppdaterade jag jämförelsen till att rensa mellanslag och konvertera båda strängarna till små bokstäver med .ToLower(). Sökningen hittar nu varor oavsett om man skriver med stora eller små bokstäver.

@@ -63,9 +63,16 @@ class ShoppingList
     // Looks up an item by its name. Returns null if there is no such item.
     public Item Find(string name)
     {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return null;
+        }
+
+        string search = name.Trim().ToLower();
+
         foreach (Item item in items)
         {
-            if (item.Name == name)
+            if (item.Name.Trim().ToLower() == search)
             {
                 return item;
             }
@@ -131,8 +138,9 @@ class ShoppingList
             {
                 continue;
             }
-            // parts[0] = pris, parts[1] = namn
-            items.Add(new Item(parts[1], int.Parse(parts[0])));
+            // Trim() rensar bort dolda \r och mellanslag som stoppade sökning
+            // med stora och små bokstäver.
+            items.Add(new Item(parts[1].Trim(), int.Parse(parts[0])));
         }
     }
 }
