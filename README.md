@@ -60,3 +60,16 @@ När användaren valde alternativ 3 i menyn hände ingenting (eller så gavs ing
 Varför: I Program.cs saknades logik för choice == 3. catch-blocket var också tomt utan specifika undantagstyp.
 
 Hur jag löste det: I Program.cs lades hantering till för choice == 3 med ett anrop till list.Save() och en paus med Console.ReadKey() så att användaren hinner läsa meddelandet. I ShoppingList.cs flyttades utskriften in i try-blocket och catch uppdaterades till att fånga specifika undantag som IOException och UnauthorizedAccessException med tydliga felmeddelanden.
+
+# DEL 2
+
+# 1: Validering i Item-konstruktorn (Domain Protection)
+Item-klassens konstruktor uppdaterades med valideringsregler för inkommande parametrar.
+
+Om name är tomt eller bara innehåller blanksteg kastas ett ArgumentException.
+
+Om price är mindre än 0 kastas ett ArgumentOutOfRangeException.
+
+Detta för att förhindra skapandet av ogiltiga eller trasiga domänobjekt i minnet (t.ex. varor utan namn eller med negativt pris).
+
+#
