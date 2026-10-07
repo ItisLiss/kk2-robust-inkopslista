@@ -72,4 +72,9 @@ Om price är mindre än 0 kastas ett ArgumentOutOfRangeException.
 
 Detta för att förhindra skapandet av ogiltiga eller trasiga domänobjekt i minnet (t.ex. varor utan namn eller med negativt pris).
 
-#
+# Steg 2: Budgettak i ShoppingList (Domain Rule)
+ShoppingList har fått en Budget-egenskap samt att Add()-metoden ändrades från void till att returnera bool.
+
+Regel: Om Total() + item.Price > Budget returnerar Add() false och varan läggs inte till i listan.  Add() returnerar en bool (true/false) istället för att kasta ett undantag.
+
+Varför: Att överskrida en budget i en inköpslista är inte ett oväntat krasch-fel eller ett systemundantag, utan en helt normal affärsregel (business logic rule). Genom att returnera bool kan Program.cs enkelt fånga resultatet och ge användaren ett tydligt meddelande i gränssnittet utan onödig try-catch-logik kring normala användarval.

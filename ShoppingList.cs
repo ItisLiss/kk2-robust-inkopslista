@@ -4,14 +4,24 @@ class ShoppingList
     private List<Item> items = new List<Item>();
     private string path;
 
+    // Egenskap för budgettak (t.ex. 1000 kr)
+    public int Budget { get; set; } = 1000;
     public ShoppingList(string path)
     {
         this.path = path;
     }
 
-    public void Add(Item item)
+    // Ändrad från void till bool för att hantera budgettaket
+    public bool Add(Item item)
     {
+        // Om den nya varans pris gör att totalsumman överstiger budgeten
+        if (Total() + item.Price > Budget)
+        {
+            return false; // Varan läggs inte till
+        }
+
         items.Add(item);
+        return true; // Varan lades till
     }
     // Ändring 1:
     // Removes the item the user sees as number 1, 2, 3 ...
