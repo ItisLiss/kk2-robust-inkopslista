@@ -53,3 +53,10 @@ Om man sökte på en vara med små bokstäver (t.ex. "mjölk") när varan var sp
 Varför: Koden jämförde strängar direkt med item.Name == name. Detta krävde exakt matchning av alla tecken och radbrytningstecken (\r) hamnade i namnet när listan lästes in från fil.
 
 Hur jag löste det: I Load() lade jag till .Trim() på varans namn när det läses in för att rensa bort dolda tecken. I Find() i ShoppingList.cs uppdaterade jag jämförelsen till att rensa mellanslag och konvertera båda strängarna till små bokstäver med .ToLower(). Sökningen hittar nu varor oavsett om man skriver med stora eller små bokstäver.
+
+# Fel 9: Menyval för sparande saknades samt tyst felhantering vid sparning (Missing Menu Logic / Silent Failure)
+När användaren valde alternativ 3 i menyn hände ingenting (eller så gavs ingen feedback om att listan sparats). Dessutom användes en tom catch vid filskrivning som fångade fel och påstod att filen sparats även om ett fel uppstod.
+
+Varför: I Program.cs saknades logik för choice == 3. catch-blocket var också tomt utan specifika undantagstyp.
+
+Hur jag löste det: I Program.cs lades hantering till för choice == 3 med ett anrop till list.Save() och en paus med Console.ReadKey() så att användaren hinner läsa meddelandet. I ShoppingList.cs flyttades utskriften in i try-blocket och catch uppdaterades till att fånga specifika undantag som IOException och UnauthorizedAccessException med tydliga felmeddelanden.

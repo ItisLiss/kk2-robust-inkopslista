@@ -66,6 +66,14 @@ while (true)
             list.RemoveAt(number);
         }
     }
+    // lade till hantering för choice == 3 för att kunna anropa list.Save().
+    // för att spara och bekräfta att listan är sparad.
+    else if (choice == 3)
+    {
+        list.Save();
+        Console.WriteLine("\nTryck på valfri tangent för att fortsätta.");
+        Console.ReadKey();
+    }
 
     else if (choice == 4)
     {

@@ -91,7 +91,7 @@ class ShoppingList
         Console.WriteLine($"Totalt: {Total()} kr");
     }
 
-    // Writes one item per line, as "price;name".
+   // Writes one item per line, as "price;name".
     public void Save()
     {
         List<string> lines = new List<string>();
@@ -104,43 +104,58 @@ class ShoppingList
         try
         {
             File.WriteAllText(path, string.Join("\r\n", lines) + "\r\n");
+            Console.WriteLine("Listan är sparad.");
         }
-        catch
+        // Från början ett helt tomt catch-fält. 
+        // Vi fångar nu specifika undantagstyper: IOException och UnauthorizedAccessException.
+        catch (IOException ex)
         {
+            Console.WriteLine($"Kunde inte spara filen: {ex.Message}");
         }
-
-        Console.WriteLine("Listan är sparad.");
+        catch (UnauthorizedAccessException ex)
+        {
+            Console.WriteLine($"Saknar behörighet att spara filen: {ex.Message}");
+        }
+        // Raden längst ner togs bort så att det inte påstås att sparningen lyckades vid fel.
     }
 
     // Reads the file back into the list.
-        public void Load()
+    public void Load()
     {
-        // För att förhindra att koden kraschar om items.txt inte finns, las en kontroll in
-        // Genom return avslutar/avbryter vi Load() och startar om med en tom lista
+        // För att förhindra att koden kraschar om items.txt inte finns, lades en kontroll in.
+        // Genom return avslutar/avbryter vi Load() och startar med en tom lista.
         if (!File.Exists(path))
         {
             return;
         }
 
         // Bytt från File.ReadAllText() till File.ReadAllLines().
-        // ReadAllLines hanterar både Windows (\r\n)  radbrytningar automatiskt
-        // och ger oss en färdig array med alla rader i filen.
-        string[] lines = File.ReadAllLines(path);
-
-        foreach (string line in lines)
+        // ReadAllLines hanterar radbrytningar automatiskt och ger en array med rader.
+        try
         {
-            string[] parts = line.Split(';');
+            string[] lines = File.ReadAllLines(path);
 
-            /// ÄNDRING: Lagt till en kontroll av arrayens längd innan vi hämtar värden från parts[0] och parts[1].
-            // Anledning: Om det finns tomma rader i slutet av filen kraschar programmet med IndexOutOfRangeException 
-            // eftersom det inte finns något index 1. Med if (parts.Length < 2) och continue hoppar vi säkert över tomma rader.
-            if (parts.Length < 2)
+            foreach (string line in lines)
             {
-                continue;
+                string[] parts = line.Split(';');
+
+                // Kontrollera att raden innehåller både pris och namn
+                if (parts.Length < 2)
+                {
+                    continue;
+                }
+
+                // Säkra mot FormatException om priset inte är ett tal, och använd den färdiga variabeln 'price'
+                if (int.TryParse(parts[0], out int price))
+                {
+                    // Trim() rensar bort dolda \r och mellanslag
+                    items.Add(new Item(parts[1].Trim(), price));
+                }
             }
-            // Trim() rensar bort dolda \r och mellanslag som stoppade sökning
-            // med stora och små bokstäver.
-            items.Add(new Item(parts[1].Trim(), int.Parse(parts[0])));
+        }
+        catch (IOException ex)
+        {
+            Console.WriteLine($"Kunde inte läsa in filen: {ex.Message}");
         }
     }
 }
