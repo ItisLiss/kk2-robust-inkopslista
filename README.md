@@ -78,3 +78,10 @@ ShoppingList har fått en Budget-egenskap samt att Add()-metoden ändrades från
 Regel: Om Total() + item.Price > Budget returnerar Add() false och varan läggs inte till i listan.  Add() returnerar en bool (true/false) istället för att kasta ett undantag.
 
 Varför: Att överskrida en budget i en inköpslista är inte ett oväntat krasch-fel eller ett systemundantag, utan en helt normal affärsregel (business logic rule). Genom att returnera bool kan Program.cs enkelt fånga resultatet och ge användaren ett tydligt meddelande i gränssnittet utan onödig try-catch-logik kring normala användarval.
+
+# Steg 3: Felhantering och användar-feedback i Program.cs 
+Program.cs uppdaterades för att hantera både undantag från Item och bool-returen från ShoppingList.Add().
+
+ArgumentException och ArgumentOutOfRangeException fångas via try-catch. Programmet kraschar inte utan visar ett pedagogiskt felmeddelande till användaren.
+
+Om list.Add() returnerar false informeras användaren om att varan inte kunde läggas till eftersom budgettaket skulle överskridas.

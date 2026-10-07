@@ -29,18 +29,42 @@ while (true)
         string name = Console.ReadLine();
         // Bytte även ut int.Parse mot int.TryParse vid prisinmatning.
         // Vilket förhindrar FormatException om användaren anger bokstäver eller annat felaktigt format som 14.5 för priset.
-        int price;
         Console.Write("Pris: ");
+        int price;
 
         // Snurrar tills användaren anger ett giltigt heltal
         while (!int.TryParse(Console.ReadLine(), out price))
         {
             Console.Write("Ogiltigt pris! Skriv ett heltal: ");
         }
-       /* Console.Write("Pris: ");
-        int price = int.Parse(Console.ReadLine()); */
-        list.Add(new Item(name, price));
-        
+      try
+    {
+        // 1. Försöker skapa Item.
+        // Om name är tomt kastas ArgumentException.
+        // Om price < 0 kastas ArgumentOutOfRangeException.
+        Item newItem = new Item(name, price);
+
+        // 2. Försöker lägga till i listan och kollar budgettaket.
+        if (list.Add(newItem))
+        {
+            Console.WriteLine($"{newItem.Name} lades till i listan.");
+        }
+        else
+        {
+            Console.WriteLine($"Kunde inte lägga till '{newItem.Name}'. Budgettaket ({list.Budget} kr) spräcks! Nuvarande total: {list.Total()} kr.");
+        }
+        }
+        catch (ArgumentOutOfRangeException ex)
+        {
+            Console.WriteLine($"Fel vid skapande av vara: {ex.Message}");
+        }
+        catch (ArgumentException ex)
+        {
+            Console.WriteLine($"Fel vid skapande av vara: {ex.Message}");
+        }
+
+        Console.WriteLine("\nTryck på valfri tangent för att fortsätta.");
+        Console.ReadKey();
     }
 
     // Bytt ut int.Parse mot int.TryParse vid borttagning av vara.
