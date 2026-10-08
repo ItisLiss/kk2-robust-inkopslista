@@ -85,3 +85,43 @@ Program.cs uppdaterades för att hantera både undantag från Item och bool-retu
 ArgumentException och ArgumentOutOfRangeException fångas via try-catch. Programmet kraschar inte utan visar ett pedagogiskt felmeddelande till användaren.
 
 Om list.Add() returnerar false informeras användaren om att varan inte kunde läggas till eftersom budgettaket skulle överskridas.
+
+# 2. Designval (Budgettak)
+Metoden ShoppingList.Add() returnerar en bool (true/false) istället för att kasta ett undantag.
+Detta för att en vara överstiger budgettaket i en inköpslista är inte ett oväntat krasch-fel eller ett systemundantag, utan en helt normal affärsregel i applikationer. Genom att returnera bool signalerar metoden tydligt till Program.cs om varan lades till eller inte, anroparen (Program.cs) kan därefter enkelt informera användaren via ett standardmeddelande i gränssnittet utan att behöva bygga prestandakrävande try-catch-strukturer kring normal användarinteraktion.
+
+# Klassdiagram
+
++------------------------------------+
+|                Item                |
++------------------------------------+
+| + Name : string                    |
+| + Price : int                      |
++------------------------------------+
+| + Item(name: string, price: int)   |
+| + ToString() : string              |
++------------------------------------+
+^
+| 1..* (contains)
++------------------------------------+
+|            ShoppingList            |
++------------------------------------+
+| - items : List               |
+| - path : string                    |
+| + Budget : int                     |
++------------------------------------+
+| + Add(item: Item) : bool           |
+| + RemoveAt(index: int) : bool      |
+| + Total() : int                    |
+| + Find(query: string) : List |
+| + Print() : void                   |
+| + Save() : void                    |
+| + Load() : void                    |
++------------------------------------+
+^
+| uses
++------------------------------------+
+|              Program               |
++------------------------------------+
+| + Main(args: string[]) : void      |
++------------------------------------+
